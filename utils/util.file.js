@@ -76,5 +76,19 @@ module.exports = () => {
                 this.deleteEmptyDir(path.dirname(dir))
             }
         }
+        /**
+         * 判断是否为指定文件类型
+         * @param {*} fileTypeList 
+         * @param {*} file 
+         */
+        this.isRightFile = (fileTypeList, file) => {
+            for(let i in fileTypeList) {
+                let reg = new RegExp(`^.*\\${fileTypeList[i]}$`)
+                if(reg.test(file.name)) {
+                    return true
+                }
+            }
+            return false
+        }
     } ()
 }

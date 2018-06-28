@@ -1,19 +1,60 @@
 const fs = require('fs')
+
 const config = require('../config')
 const fileUtil = require('../utils/util.file')()
+const imageUtil = require('../utils/util.image')()
+const historyUtil = require('../utils/util.history')
+
 module.exports = () => {
     return {
         put: (ctx, next) => {
             let file = ctx.request.files.file
+            //类型匹配
+            if (!fileUtil.isRightFile(config.upload.imageAllowFiles, file)) {
+                ctx.throw(500, '请上传指定类型图片文件.')
+            }
             let size = file.size
-            if(size > config.upload.imageSize) {
+            if (size > config.upload.imageSize) {
                 ctx.throw(500, '图片过大, 请上传指定大小图片文件.')
             }
             let image = fileUtil.persist(config.path.root + config.path.image, file)
+            let url = config.path.image + image.relativePath
+            //添加历史
+            historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
             ctx.body = {
                 state: config.state.success,
-                url: ctx.host + config.path.image + image.relativePath
+                url: url,
+                title: image.name,
+                original: file.name,
+                type: file.type,
+                size: file.size
             }
+        },
+        download: async (ctx, next) => {
+            let imageUrlList = ctx.request.body.source
+            let images = await imageUtil.download(config.path.root + config.path.image, imageUrlList)
+            let imgs = [], url
+            images.forEach(image => {
+                if(config.state.success == image.state) {
+                    url = config.path.image + image.relativePath
+                    imgs.push({
+                        state: image.state,
+                        title: image.name,
+                        size: image.size,
+                        type: image.type,
+                        url: url
+                    })
+                    historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
+                } else {
+                    imgs.push({
+                        state: image.state,
+                        msg: image.msg,
+                        source: image.source
+                    })
+                }
+                
+            })
+            ctx.body = imgs
         },
         delete: (ctx, next) => {
             let name = ctx.params.name

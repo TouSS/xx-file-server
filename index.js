@@ -19,16 +19,17 @@ app.use(async (ctx, next) => {
     }
     //ctx.redirect('/500.html');
     //console.error(`error: ${err.message}`)
+    console.error(`Error in ${ctx.url}`)
     console.error(err)
   }
 })
 
-app.use(async (ctx, next) => {
+/* app.use(async (ctx, next) => {
   let start = new Date().getTime()
   await next()
   let end = new Date().getTime()
   console.log(`HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
-})
+}) */
 
 //允许跨域
 app.use(cors())
@@ -52,7 +53,7 @@ app.use(router.allowedMethods())
 
 // 404
 app.use(ctx => {
-  ctx.throw(404, 'The page you want not found.')
+  ctx.throw(404, `No page named: ${ctx.url}`)
 });
 
 app.listen(config.server.port);
