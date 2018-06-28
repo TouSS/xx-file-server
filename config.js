@@ -25,6 +25,7 @@ module.exports = {
             ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
             ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
         ],
+        imageCatchTimeout: 5000,
         maxSize: 500 * 1024 * 1024,
         fileSize: 500 * 1024 * 1024,
         imageSize: 10 * 1024 * 1024,

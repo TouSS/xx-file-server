@@ -17,7 +17,7 @@ module.exports = () => {
             let imageList = []
             for (let i in imageUrlList) {
                 try {
-                    let image = await this.get(imageUrlList[i], 3000)
+                    let image = await this.get(imageUrlList[i], config.upload.imageCatchTimeout)
                     //计算图片MD5
                     let md5 = crypto.createHash('md5')
                     md5.update(image.data)
