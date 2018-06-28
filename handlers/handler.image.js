@@ -30,6 +30,19 @@ module.exports = () => {
                 size: file.size
             }
         },
+        putBase64: (ctx, next) => {
+            let image = fileUtil.persistBase64(config.path.root + config.path.image, ctx.request.body.file, '.jpg')
+            let url = config.path.image + image.relativePath
+            //添加历史
+            historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
+            ctx.body = {
+                state: config.state.success,
+                url: url,
+                title: image.name,
+                type: '.jpg',
+                size: image.size
+            }
+        },
         download: async (ctx, next) => {
             let imageUrlList = ctx.request.body.source
             let images = await imageUtil.download(config.path.root + config.path.image, imageUrlList)

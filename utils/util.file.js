@@ -44,6 +44,28 @@ module.exports = () => {
                 relativePath: relativePath
             }
         }
+        this.persistBase64 = (dir, base64Str, type) => {
+            let fileBuffer = Buffer.from(base64Str, 'base64')
+            let size = fileBuffer.length
+            let md5 = crypto.createHash('md5')
+            md5.update(fileBuffer)
+            let md5Hex = md5.digest('hex');
+            //文件名（MD5.3/MD5.3/MD5 + 图片后缀）
+            let fileName =  md5Hex + type
+            let relativePath = '/' + md5Hex.substr(0, 3) + '/' + md5Hex.substr(3, 3) + '/' + fileName
+            let filePath = dir + relativePath
+            //保存文件
+            this.mkdirs(path.dirname(filePath))
+            fs.writeFileSync(filePath, fileBuffer)
+
+            return {
+                size: size,
+                name: fileName,
+                path: filePath,
+                relativePath: relativePath
+            }
+
+        }
         /**
          * 移除文件
          * @param {*} filePath 
