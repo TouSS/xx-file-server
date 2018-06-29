@@ -1,13 +1,17 @@
 const Koa = require('koa');
 const app = new Koa();
+const cors = require('koa2-cors')
+const onerror = require('koa-onerror')
 
 const body = require('koa-body')
 const config = require('./config')
 const router = require('./router')
-const cors = require('koa2-cors')
+const accessHandler = require('./handlers/handler.access')
 
 //错误处理
-app.use(async (ctx, next) => {
+onerror(app)
+
+/* app.use(async (ctx, next) => {
   try {
     await next()
   } catch (err) {
@@ -22,14 +26,9 @@ app.use(async (ctx, next) => {
     console.error(`Error in ${ctx.url}`)
     console.error(err)
   }
-})
+}) */ 
 
-/* app.use(async (ctx, next) => {
-  let start = new Date().getTime()
-  await next()
-  let end = new Date().getTime()
-  console.log(`HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
-}) */
+app.use(accessHandler())
 
 //允许跨域
 app.use(cors())
