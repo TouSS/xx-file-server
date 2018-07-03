@@ -3,8 +3,8 @@ module.exports = [
     {
         path: '/image',
         method: 'POST',
-        handler: (ctx, next) => {
-            imageHandler.put(ctx, next)
+        handler: async (ctx, next) => {
+            await imageHandler.put(ctx, next)
         }
     }, {
         path: '/image/:name',

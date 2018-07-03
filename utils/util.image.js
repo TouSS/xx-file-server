@@ -4,6 +4,8 @@ const crypto = require('crypto')
 const http = require('http')
 const https = require('https')
 
+const Jimp = require('jimp')
+
 const config = require('../config')
 const fileUtil = require('./util.file')()
 module.exports = () => {
@@ -93,6 +95,29 @@ module.exports = () => {
                     req.abort()
                     reject(new Error(`TIMEOUT`))
                 }, timeout)
+            })
+        }
+
+        /**
+         * 重定义图片大小
+         * @param {*} dir 
+         * @param {*} image 
+         * @param {*} width 
+         * @param {*} height 
+         */
+        this.resize = (dir, image, width, height) => {
+            if(!width) width = config.upload.defaultResizeWidth
+            if(!height) height = Jimp.AUTO
+            return new Promise((resolve, reject) => {
+                Jimp.read(image, (err, img) => {
+                    if(err) reject(err)
+                    img.resize(width, height)
+                        .getBuffer(Jimp.AUTO, (err, buffer) => {
+                        if(err) reject(err)
+                        let suffix = img.getMIME().split('/').pop()
+                        resolve(fileUtil.persistBuffer(dir, buffer, suffix ? '.'+suffix : '.png'))
+                    })
+                })
             })
         }
     }()

@@ -25,7 +25,8 @@ module.exports = () => {
         this.persist = (dir, file) => {
             //计算图片MD5
             let fileBuffer = fs.readFileSync(file.path)
-            let md5 = crypto.createHash('md5')
+            let type = '.' + file.name.split('.').pop()
+            /* let md5 = crypto.createHash('md5')
             md5.update(fileBuffer)
             let md5Hex = md5.digest('hex');
             //文件名（MD5.3/MD5.3/MD5 + 图片后缀）
@@ -34,19 +35,27 @@ module.exports = () => {
             let filePath = dir + relativePath
             //保存文件
             this.mkdirs(path.dirname(filePath))
-            fs.writeFileSync(filePath, fileBuffer)
+            fs.writeFileSync(filePath, fileBuffer) */
+            let result = this.persistBuffer(dir, fileBuffer, type)
             //移除零时文件
             this.delete(file.path, false)
 
-            return {
+            /* return {
                 name: fileName,
                 path: filePath,
                 relativePath: relativePath
-            }
+            } */
+            return result
         }
+        /**
+         * 结构并保存Base64字符文件
+         * @param {*} dir 
+         * @param {*} base64Str 
+         * @param {*} type 
+         */
         this.persistBase64 = (dir, base64Str, type) => {
             let fileBuffer = Buffer.from(base64Str, 'base64')
-            let size = fileBuffer.length
+            /* let size = fileBuffer.length
             let md5 = crypto.createHash('md5')
             md5.update(fileBuffer)
             let md5Hex = md5.digest('hex');
@@ -63,8 +72,35 @@ module.exports = () => {
                 name: fileName,
                 path: filePath,
                 relativePath: relativePath
-            }
+            } */
+            return this.persistBuffer(dir, fileBuffer, type)
 
+        }
+        /**
+         * 处理文件Buffer内容
+         * @param {*} dir 
+         * @param {*} buffer 
+         * @param {*} type 
+         */
+        this.persistBuffer = (dir, buffer, type) => {
+            let size = buffer.length
+            let md5 = crypto.createHash('md5')
+            md5.update(buffer)
+            let md5Hex = md5.digest('hex');
+            //文件名（MD5.3/MD5.3/MD5 + 图片后缀）
+            let fileName =  md5Hex + type
+            let relativePath = '/' + md5Hex.substr(0, 3) + '/' + md5Hex.substr(3, 3) + '/' + fileName
+            let filePath = dir + relativePath
+            //保存文件
+            this.mkdirs(path.dirname(filePath))
+            fs.writeFileSync(filePath, buffer)
+
+            return {
+                size: size,
+                name: fileName,
+                path: filePath,
+                relativePath: relativePath
+            }
         }
         /**
          * 移除文件

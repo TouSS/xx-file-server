@@ -7,7 +7,7 @@ const historyUtil = require('../utils/util.history')
 
 module.exports = () => {
     return {
-        put: (ctx, next) => {
+        put: async (ctx, next) => {
             let file = ctx.request.files.file
             //类型匹配
             if (!fileUtil.isRightFile(config.upload.imageAllowFiles, file)) {
@@ -18,12 +18,15 @@ module.exports = () => {
                 ctx.throw(500, '图片过大, 请上传指定大小图片文件.')
             }
             let image = fileUtil.persist(config.path.root + config.path.image, file)
-            let url = config.path.image + image.relativePath
+            //缩小尺寸
+            let img = await imageUtil.resize(config.path.root + config.path.image, image.path)
+            let url = config.path.image + image.relativePath, thumbnail = config.path.image + img.relativePath
             //添加历史
             historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
             ctx.body = {
                 state: config.state.success,
                 url: url,
+                thumbnail: thumbnail,
                 title: image.name,
                 original: file.name,
                 type: file.type,
