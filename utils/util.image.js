@@ -106,16 +106,24 @@ module.exports = () => {
          * @param {*} height 
          */
         this.resize = (dir, image, width, height) => {
-            if(!width) width = config.upload.defaultResizeWidth
-            if(!height) height = Jimp.AUTO
             return new Promise((resolve, reject) => {
                 Jimp.read(image, (err, img) => {
                     if(err) reject(err)
+                    let sourceWidth = img.bitmap.width
+                    let sourceHeight = img.bitmap.height
+                    if(sourceWidth <= config.upload.imageResizeMinWidth) reject('未达到压缩标准, 放弃本次操作.')
+                    if(!width) width = sourceWidth / config.upload.imageResizeScale
+                    width = width > config.upload.imageResizeMinWidth ? width : config.upload.imageResizeMinWidth
+                    if(!height) height = Jimp.AUTO
                     img.resize(width, height)
                         .getBuffer(Jimp.AUTO, (err, buffer) => {
                         if(err) reject(err)
                         let suffix = img.getMIME().split('/').pop()
-                        resolve(fileUtil.persistBuffer(dir, buffer, suffix ? '.'+suffix : '.png'))
+                        let thenImg = fileUtil.persistBuffer(dir, buffer, suffix ? '.'+suffix : '.png')
+                        thenImg.sourceWidth = sourceWidth
+                        thenImg.sourceHeight = sourceHeight
+
+                        resolve(thenImg)
                     })
                 })
             })

@@ -19,6 +19,7 @@ module.exports = () => {
                 })
                 .screenshots({
                     timestamps: [5], //5秒处截图
+                    size: '640x480',
                     filename: screenshotName,
                     folder: config.path.root + config.path.image + relativeDir
                 })

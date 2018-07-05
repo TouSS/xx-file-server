@@ -30,7 +30,8 @@ module.exports = {
         fileSize: 500 * 1024 * 1024,
         imageSize: 10 * 1024 * 1024,
         videoSize: 500 * 1024 * 1024,
-        defaultResizeWidth: 500
+        imageResizeMinWidth: 320,
+        imageResizeScale: 5
     },
     history: {
         length: 50
