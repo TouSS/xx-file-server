@@ -3,6 +3,7 @@ const fs = require('fs')
 
 let router = new Router()
 
+let apis = []
 //加载router目录下的所有路由
 let files = fs.readdirSync(__dirname + '/routers')
 files.forEach(f => {
@@ -26,7 +27,13 @@ files.forEach(f => {
         } else {
             console.warn(`method ${r.method} not supported .` )
         }
+
+        apis.push(`${r.path} -> ${r.method} - ${r.desc}`)
     })
+})
+//添加说明配置
+router.get('/', (ctx, next) => {
+    ctx.body = apis
 })
 
 module.exports = router

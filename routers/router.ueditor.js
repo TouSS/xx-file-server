@@ -7,6 +7,7 @@ const historyUtil = require('../utils/util.history')
 module.exports = [
     {
         path: '/ueditor',
+        desc: 'Ueditor全配置',
         method: 'GET',
         handler: (ctx, next) => {
             let action = ctx.query.action
@@ -26,6 +27,7 @@ module.exports = [
     },
     {
         path: '/ueditor',
+        desc: 'Ueditor相关操作：参数 action - 对应操作',
         method: 'POST',
         handler: async (ctx, next) => {
             let action = ctx.query.action
