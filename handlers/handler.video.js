@@ -20,20 +20,24 @@ module.exports = () => {
             //保存文件
             let video = fileUtil.persist(config.path.root + config.path.video, file)
             //提取预览图
-            let screenshotUrl = '', msg = ''
+            let screenshot, msg = ''
             try {
-                screenshotUrl = await videoUtil.screenshot(video)
+                screenshot = await videoUtil.screenshot(video)
             } catch (err) {
-                screenshotUrl = ''
-                msg = `获取预览图失败：${err.message}`
+                screenshot = {
+                    url: '',
+                    length: 0
+                }
+                msg = `视频解析失败：${err.message}`
             }
             let url = config.path.video + video.relativePath
             //添加历史
-            historyUtil.add({url: url, screenshot: screenshotUrl}, historyUtil.FILE_TYPE_VIDEO)
+            historyUtil.add({url: url, screenshot: screenshot.url}, historyUtil.FILE_TYPE_VIDEO)
             ctx.body = {
                 state: config.state.success,
                 msg: msg,
-                screenshot: screenshotUrl,
+                screenshot: screenshot.url,
+                length: screenshot.length,
                 url: url,
                 title: video.name,
                 original: file.name,

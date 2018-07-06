@@ -111,7 +111,13 @@ module.exports = () => {
                     if(err) reject(err)
                     let sourceWidth = img.bitmap.width
                     let sourceHeight = img.bitmap.height
-                    if(sourceWidth <= config.upload.imageResizeMinWidth) reject('未达到压缩标准, 放弃本次操作.')
+                    if(sourceWidth <= config.upload.imageResizeMinWidth) {
+                        resolve({
+                            sourceWidth: sourceWidth, 
+                            sourceHeight: sourceHeight
+                        })
+                        //reject('未达到压缩标准, 放弃本次操作.')
+                    }
                     if(!width) width = sourceWidth / config.upload.imageResizeScale
                     width = width > config.upload.imageResizeMinWidth ? width : config.upload.imageResizeMinWidth
                     if(!height) height = Jimp.AUTO

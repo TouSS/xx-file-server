@@ -20,7 +20,7 @@ module.exports = () => {
             let image = fileUtil.persist(config.path.root + config.path.image, file)
             //缩小尺寸
             let img = await imageUtil.resize(config.path.root + config.path.image, image.path)
-            let url = config.path.image + image.relativePath, thumbnail = config.path.image + img.relativePath
+            let url = config.path.image + image.relativePath, thumbnail = img.relativePath ? config.path.image + img.relativePath : ''
             //添加历史
             historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
             ctx.body = {
