@@ -33,7 +33,7 @@ module.exports = [
             let action = ctx.query.action
             switch (action) {
                 case 'uploadimage':
-                    imageHandler.put(ctx, next)
+                    await imageHandler.put(ctx, next)
                     break
                 case 'uploadscrawl':
                     imageHandler.putBase64(ctx, next)

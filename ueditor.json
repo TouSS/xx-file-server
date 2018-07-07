@@ -1,29 +1,29 @@
 {
     "imageActionName": "uploadimage",
     "imageFieldName": "file",
-    "imageUrlPrefix": "",
+    "imageUrlPrefix": "//192.168.1.8:3000",
     "imageAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],
                                 
     "scrawlActionName": "uploadscrawl",
     "scrawlFieldName": "file",
-    "scrawlUrlPrefix": "",
+    "scrawlUrlPrefix": "//192.168.1.8:3000",
 
     "catcherLocalDomain": ["127.0.0.1", "localhost", "img.baidu.com"],
     "catcherActionName": "catchimage",
     "catcherFieldName": "source",
-    "catcherUrlPrefix": "",
+    "catcherUrlPrefix": "//192.168.1.8:3000",
     "catcherAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],
 
     "videoActionName": "uploadvideo",
     "videoFieldName": "file",
-    "videoUrlPrefix": "",
+    "videoUrlPrefix": "//192.168.1.8:3000",
     "videoAllowFiles": [
         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
         ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid"],
 
     "fileActionName": "uploadfile",
     "fileFieldName": "file",
-    "fileUrlPrefix": "",
+    "fileUrlPrefix": "//192.168.1.8:3000",
     "fileAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
@@ -34,12 +34,12 @@
 
     "imageManagerActionName": "listimage",
     "imageManagerListSize": 20,
-    "imageManagerUrlPrefix": "",
+    "imageManagerUrlPrefix": "//192.168.1.8:3000",
     "imageManagerAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"],
 
     "fileManagerActionName": "listfile",
     "fileManagerListSize": 20,
-    "fileManagerUrlPrefix": "",
+    "fileManagerUrlPrefix": "//192.168.1.8:3000",
     "fileManagerAllowFiles": [
         ".png", ".jpg", ".jpeg", ".gif", ".bmp",
         ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
