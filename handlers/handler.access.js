@@ -4,6 +4,6 @@ module.exports = () => {
         let start = new Date().getTime()
         await next()
         let end = new Date().getTime()
-        console.log(`HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
+        console.log(`[${new Date().toLocaleString()}] HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
     }
 }

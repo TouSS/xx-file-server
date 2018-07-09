@@ -45,7 +45,7 @@ module.exports = [
                     await videoHandler.put(ctx, next)
                     break
                 case 'uploadfile':
-                    fileHandler.put(ctx, next)
+                    await fileHandler.put(ctx, next)
                     break
             }
         }
