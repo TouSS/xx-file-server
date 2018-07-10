@@ -108,29 +108,29 @@ module.exports = () => {
         this.resize = (dir, image, width, height) => {
             return new Promise((resolve, reject) => {
                 Jimp.read(image, (err, img) => {
-                    if(err) reject(err)
+                    if (err) reject(err)
                     let sourceWidth = img.bitmap.width
                     let sourceHeight = img.bitmap.height
-                    if(sourceWidth <= config.upload.imageResizeMinWidth) {
+                    if (sourceWidth <= config.upload.imageResizeMinWidth) {
                         resolve({
-                            sourceWidth: sourceWidth, 
+                            sourceWidth: sourceWidth,
                             sourceHeight: sourceHeight
                         })
                         //reject('未达到压缩标准, 放弃本次操作.')
                     }
-                    if(!width) width = sourceWidth / config.upload.imageResizeScale
+                    if (!width) width = sourceWidth / config.upload.imageResizeScale
                     width = width > config.upload.imageResizeMinWidth ? width : config.upload.imageResizeMinWidth
-                    if(!height) height = Jimp.AUTO
+                    if (!height) height = Jimp.AUTO
                     img.resize(width, height)
                         .getBuffer(Jimp.AUTO, (err, buffer) => {
-                        if(err) reject(err)
-                        let suffix = img.getMIME().split('/').pop()
-                        let thenImg = fileUtil.persistBuffer(dir, buffer, suffix ? '.'+suffix : '.png')
-                        thenImg.sourceWidth = sourceWidth
-                        thenImg.sourceHeight = sourceHeight
+                            if (err) reject(err)
+                            let suffix = img.getMIME().split('/').pop()
+                            let thenImg = fileUtil.persistBuffer(dir, buffer, suffix ? '.' + suffix : '.png')
+                            thenImg.sourceWidth = sourceWidth
+                            thenImg.sourceHeight = sourceHeight
 
-                        resolve(thenImg)
-                    })
+                            resolve(thenImg)
+                        })
                 })
             })
         }

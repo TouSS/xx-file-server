@@ -14,5 +14,12 @@ module.exports = [
         handler: (ctx, next) => {
             videoHandler.delete(ctx, next)
         }
+    }, {
+        path: '/video/:name',
+        desc: '音频/视频在线播放, URL参数：name - 视频/音频名称',
+        method: 'GET',
+        handler: (ctx, next) => {
+            videoHandler.stream(ctx, next)
+        }
     }
 ]

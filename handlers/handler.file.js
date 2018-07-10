@@ -24,7 +24,7 @@ module.exports = () => {
             let type = file.type
             if (/image\/.*/.test(type)) {
                 await imageHandler.put(ctx, next)
-            } else if (/video\/.*/.test(type)) {
+            } else if (/video\/.*/.test(type) || /audio\/.*/.test(type)) {
                 await videoHandler.put(ctx, next)
             } else {
                 let other = fileUtil.persist(config.path.root + config.path.other, file)

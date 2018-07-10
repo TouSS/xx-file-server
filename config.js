@@ -33,6 +33,9 @@ module.exports = {
         imageResizeMinWidth: 320,
         imageResizeScale: 5
     },
+    online: {
+        allowType: ['audio/ogg', 'audio/mpeg', 'audio/wav', 'video/ogg', 'video/mp4', 'video/webm']
+    },
     history: {
         length: 50
     }
