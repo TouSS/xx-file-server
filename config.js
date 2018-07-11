@@ -38,5 +38,14 @@ module.exports = {
     },
     history: {
         length: 50
+    },
+    log4js: {
+        appenders: {
+            console: { type: 'console' },
+            runtime: { type: 'dateFile', filename: __dirname + '/logs/runtime.log' }
+        },
+        categories: {
+            default: { appenders: ['console', 'runtime'], level: 'debug' }
+        }
     }
 }

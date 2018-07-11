@@ -1,6 +1,7 @@
 const path = require('path')
 
 const config = require('../config')
+const log = require('../utils/util.log').getLogger()
 
 module.exports = () => {
     return async (ctx, next) => {
@@ -12,6 +13,6 @@ module.exports = () => {
         let start = new Date().getTime()
         await next()
         let end = new Date().getTime()
-        console.log(`[${new Date().toLocaleString()}] HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
+        log.debug(`HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
     }
 }

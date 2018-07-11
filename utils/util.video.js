@@ -16,12 +16,6 @@ module.exports = () => {
             return new Promise((resolve, reject) => {
                 let length
                 ffmpeg(video.path)
-                    /* .on("start", commandLine => {
-                        //console.log(commandLine)
-                    })
-                    .on("codecData", data => {
-                        //console.log(data)
-                    }) */
                     .on("progress", progress => {
                         length = Math.floor(4 / progress.percent)
                     })

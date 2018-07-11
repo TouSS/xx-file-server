@@ -1,6 +1,8 @@
 const Router = require('koa-router')
 const fs = require('fs')
 
+const log = require('./utils/util.log').getLogger()
+
 let router = new Router()
 
 let apis = []
@@ -25,7 +27,7 @@ files.forEach(f => {
                 await r.handler(ctx, next)
             })
         } else {
-            console.warn(`method ${r.method} not supported .` )
+            log.warn(`method ${r.method} not supported .` )
         }
 
         apis.push(`${r.path} -> ${r.method} - ${r.desc}`)

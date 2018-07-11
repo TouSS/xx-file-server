@@ -3,9 +3,10 @@ const app = new Koa();
 const cors = require('koa2-cors')
 const onerror = require('koa-onerror')
 const easyMonitor = require('easy-monitor');
-
 const body = require('koa-body')
+
 const config = require('./config')
+const log = require('./utils/util.log').getLogger()
 const router = require('./router')
 const accessHandler = require('./handlers/handler.access')
 
@@ -25,9 +26,7 @@ onerror(app)
       message: err.message
     }
     //ctx.redirect('/500.html');
-    //console.error(`error: ${err.message}`)
-    console.error(`Error in ${ctx.url}`)
-    console.error(err)
+    //log.error(`${err.message}`)
   }
 }) */ 
 
@@ -58,5 +57,9 @@ app.use(ctx => {
   ctx.throw(404, `No page named: ${ctx.url}`)
 });
 
+app.on('error', err => {
+  log.error(JSON.stringify(err))
+})
+
 app.listen(config.server.port);
-console.log(`${config.server.name} started in port ${config.server.port} .`)
+log.info(`${config.server.name} started in port ${config.server.port} .`)
