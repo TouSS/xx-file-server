@@ -58,7 +58,7 @@ app.use(ctx => {
 });
 
 app.on('error', err => {
-  log.error(JSON.stringify(err))
+  log.error(err.message)
 })
 
 app.listen(config.server.port);
