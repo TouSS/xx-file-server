@@ -21,17 +21,20 @@ module.exports = () => {
             }
             //保存文件
             let video = fileUtil.persist(config.path.root + config.path.video, file)
-            //提取预览图
-            let screenshot, msg = ''
-            try {
-                screenshot = await videoUtil.screenshot(video)
-            } catch (err) {
-                screenshot = {
-                    url: '',
-                    length: 0
+            //附加处理
+            let screenshot = {}, msg = ''
+            if(/audio\/.*/.test(file.type)) {
+                //音频-暂无处理
+                msg = '暂不支持音频文件信息提取'
+            } else{
+                //视频-获取截图
+                try {
+                    screenshot = await videoUtil.screenshot(video)
+                } catch (err) {
+                    msg = `视频解析失败：${err.message}`
                 }
-                msg = `视频解析失败：${err.message}`
             }
+
             let url = config.path.video + video.relativePath
             //添加历史
             historyUtil.add({ url: url, screenshot: screenshot.url }, historyUtil.FILE_TYPE_VIDEO)
