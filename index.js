@@ -69,7 +69,8 @@ app.use(ctx => {
 });
 
 app.on('error', err => {
-  log.error(err.message)
+  let mode = process.env.NODE_ENV || 'development'
+  log.error(`${mode == 'development' ? err.stack : err.message}`)
 })
 
 app.listen(config.server.port);
