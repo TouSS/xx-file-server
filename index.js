@@ -13,7 +13,18 @@ const accessHandler = require('./handlers/handler.access')
 easyMonitor('Image-Server');
 
 //错误处理
-onerror(app)
+onerror(app, {
+  accepts: () => {
+    //JSON格式错误返回 
+    return 'json'
+  },
+  json: (err, ctx) => {
+    ctx.body = {
+      state: config.state.failed,
+      msg: err.message
+    }
+  }
+})
 
 /* app.use(async (ctx, next) => {
   try {
