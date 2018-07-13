@@ -23,16 +23,17 @@ module.exports = () => {
             let video = fileUtil.persist(config.path.root + config.path.video, file)
             //附加处理
             let screenshot = {}, msg = ''
-            if(/audio\/.*/.test(file.type)) {
-                //音频-暂无处理
-                msg = '暂不支持音频文件信息提取'
-            } else{
-                //视频-获取截图
-                try {
+            try {
+                if (/audio\/.*/.test(file.type)) {
+                    //音频-专辑图片
+                    screenshot = await videoUtil.cover(video)
+                } else {
+                    //视频-获取截图
                     screenshot = await videoUtil.screenshot(video)
-                } catch (err) {
-                    msg = `视频解析失败：${err.message}`
+
                 }
+            } catch (err) {
+                msg = `媒体文件解析失败：${err.message}`
             }
 
             let url = config.path.video + video.relativePath
@@ -42,7 +43,7 @@ module.exports = () => {
                 state: config.state.success,
                 msg: msg,
                 screenshot: screenshot.url,
-                length: screenshot.length,
+                length: screenshot.duration,
                 url: url,
                 title: video.name,
                 original: file.name,
@@ -75,22 +76,22 @@ module.exports = () => {
                     if (range) {
                         ctx.set("Content-Range", "bytes " + range.start + "-" + range.end + "/" + state.size)
                         ctx.set("Content-Length", (range.end - range.start + 1))
-                        ctx.status= 206
-                        ctx.message= 'Partial Content'
+                        ctx.status = 206
+                        ctx.message = 'Partial Content'
                         ctx.body = fs.createReadStream(realPath, { "start": range.start, "end": range.end })
                     } else {
-                        ctx.status= 206
-                        ctx.message= 'Request Range Not Satisfiable'
+                        ctx.status = 206
+                        ctx.message = 'Request Range Not Satisfiable'
                         ctx.body = ''
                     }
                 } else {
-                    ctx.status= 200
-                    ctx.message= 'Display without Range'
+                    ctx.status = 200
+                    ctx.message = 'Display without Range'
                     ctx.body = fs.createReadStream(realPath)
                 }
             } else {
-                ctx.status= 200
-                ctx.message= 'Media not support'
+                ctx.status = 200
+                ctx.message = 'Media not support'
                 ctx.body = fs.createReadStream(realPath)
             }
         }
