@@ -40,6 +40,7 @@ module.exports = {
         length: 50
     },
     log4js: {
+        pm2: true,
         appenders: {
             console: { type: 'console' },
             runtime: { type: 'dateFile', filename: __dirname + '/logs/runtime.log' }

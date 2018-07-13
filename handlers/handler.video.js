@@ -3,6 +3,7 @@ const mime = require('mime')
 const path = require('path')
 
 const config = require('../config')
+const log = require('../utils/util.log').getLogger()
 const fileUtil = require('../utils/util.file')()
 const videoUtil = require('../utils/util.video')()
 const historyUtil = require('../utils/util.history')
