@@ -33,6 +33,7 @@ module.exports = () => {
 
                 }
             } catch (err) {
+                log.warn(`视频/音频解析失败(${file.name}): ${err.message}`)
                 msg = `媒体文件解析失败：${err.message}`
             }
 
