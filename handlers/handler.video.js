@@ -3,7 +3,6 @@ const mime = require('mime')
 const path = require('path')
 
 const config = require('../config')
-const log = require('../utils/util.log').getLogger()
 const fileUtil = require('../utils/util.file')()
 const videoUtil = require('../utils/util.video')()
 const historyUtil = require('../utils/util.history')
@@ -23,19 +22,15 @@ module.exports = () => {
             //保存文件
             let video = fileUtil.persist(config.path.root + config.path.video, file)
             //附加处理
-            let screenshot = {}, msg = ''
-            try {
-                if (/audio\/.*/.test(file.type)) {
-                    //音频-专辑图片
-                    screenshot = await videoUtil.cover(video)
-                } else {
-                    //视频-获取截图
-                    screenshot = await videoUtil.screenshot(video)
+            let screenshot = {}
 
-                }
-            } catch (err) {
-                log.warn(`视频/音频解析失败(${file.name}): ${err.message}`)
-                msg = `媒体文件解析失败：${err.message}`
+            if (/audio\/.*/.test(file.type)) {
+                //音频-专辑图片
+                screenshot = await videoUtil.cover(video)
+            } else {
+                //视频-获取截图
+                screenshot = await videoUtil.screenshot(video)
+
             }
 
             let url = config.path.video + video.relativePath
@@ -43,7 +38,7 @@ module.exports = () => {
             historyUtil.add({ url: url, screenshot: screenshot.url }, historyUtil.FILE_TYPE_VIDEO)
             ctx.body = {
                 state: config.state.success,
-                msg: msg,
+                msg: screenshot.msg,
                 screenshot: screenshot.url,
                 length: screenshot.duration,
                 url: url,

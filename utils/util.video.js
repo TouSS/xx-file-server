@@ -1,6 +1,8 @@
 const ffmpeg = require('fluent-ffmpeg')
+
 const config = require('../config')
 const fileUtil = require('./util.file')()
+const log = require('./util.log').getLogger()
 
 module.exports = () => {
     return new function () {
@@ -20,7 +22,11 @@ module.exports = () => {
                         stdout.push(line)
                     })
                     .on('error', err => {
-                        reject(err)
+                        info = this.parseInfo(stdout)
+                        info.msg = `获取视频截图失败: ${err.message}`
+                        log.warn(info.msg)
+                        info.url = '/resources/video.jpg'
+                        resolve(info)
                     })
                     .on('end', () => {
                         info = this.parseInfo(stdout)
@@ -50,7 +56,11 @@ module.exports = () => {
                 ffmpeg(audio.path)
                     .size('640x?')
                     .on('error', err => {
-                        reject(err)
+                        info = this.parseInfo(stdout)
+                        info.msg = `获取音乐专辑封面失败: ${err.message}`
+                        log.warn(info.msg)
+                        info.url = '/resources/audio.jpg'
+                        resolve(info)
                     })
                     .on('stderr', line => {
                         stdout.push(line)
