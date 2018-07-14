@@ -14,5 +14,12 @@ module.exports = [
         handler: (ctx, next) => {
             handler.delete(ctx, next)
         }
+    }, {
+        path: '/customize/*',
+        desc: '通用-上传到自定义目录, 参数：file - 文件名称 ： /customize + 保存路径',
+        method: 'POST',
+        handler: (ctx, next) => {
+            handler.customize(ctx, next)
+        }
     }
 ]

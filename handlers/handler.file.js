@@ -53,6 +53,19 @@ module.exports = () => {
             ctx.body = {
                 state: config.state.success
             }
+        },
+        customize: (ctx, next) => {
+            let file = ctx.request.files.file
+            let url = ctx.url
+            url = url.substr(10)
+            let saveDir = config.path.root + url
+            fileUtil.mkdirs(saveDir)
+            let savePath = saveDir + '/' + file.name
+            fs.writeFileSync(savePath, fs.readFileSync(file.path))
+            ctx.body = {
+                state: config.state.success,
+                url: url + '/' + file.name
+            }
         }
     }
 }
