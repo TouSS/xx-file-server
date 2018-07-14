@@ -41,12 +41,14 @@ module.exports = {
     },
     log4js: {
         pm2: true,
+        pm2InstanceVar: 'NODE_APP_INSTANCE',
         appenders: {
             console: { type: 'console' },
+            stdout: { type: 'stdout' },
             runtime: { type: 'dateFile', filename: __dirname + '/logs/runtime.log' }
         },
         categories: {
-            default: { appenders: ['console', 'runtime'], level: 'debug' }
+            default: { appenders: ['stdout'], level: 'debug' }
         }
     }
 }
