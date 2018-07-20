@@ -5,15 +5,34 @@ const http = require('http')
 const https = require('https')
 
 const Jimp = require('jimp')
+const phantom = require('phantom')
 
 const config = require('../config')
 const fileUtil = require('./util.file')()
 module.exports = () => {
     return new function () {
         /**
+         * 获取网页截图
+         * @param {*} dir 
+         * @param {*} url 页面URL
+         */
+        this.catch = async (dir, url) => {
+            let instance = await phantom.create();
+            let page = await instance.createPage();
+            page.viewportSize = { width: 1920, height: 1080 }
+            let status = await page.open(url)
+            if ('success' == status) {
+                let png = fileUtil.persistBase64(dir, await page.renderBase64('PNG'), '.png')
+                instance.exit()
+                return png
+            } else {
+                throw new Error('无法获取页面内容...')
+            }
+        }
+        /**
          * 下载图片到本地
          * @param {*} dir 
-         * @param {*} imageUrlList 
+         * @param {*} imageUrlList 图片链接
          */
         this.download = async (dir, imageUrlList) => {
             let imageList = []

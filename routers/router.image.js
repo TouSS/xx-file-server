@@ -8,6 +8,13 @@ module.exports = [
             await imageHandler.put(ctx, next)
         }
     }, {
+        path: '/image/catch',
+        desc: '抓取网页截图, URL参数：page - 页面地址',
+        method: 'GET',
+        handler: async (ctx, next) => {
+            await imageHandler.catch(ctx, next)
+        }
+    }, {
         path: '/image/:name',
         desc: '删除图片文件, URL参数：name - 图片名称',
         method: 'DELETE',

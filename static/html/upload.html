@@ -15,10 +15,21 @@
         <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt>
         </el-dialog>
-
-        <el-upload class="upload-demo" action="/upload" :on-remove="handleRemove" multiple>
+        <br />
+        <el-upload class="upload-demo" action="/upload" :on-remove="handleRemove" :on-preview="handlePreview" multiple>
             <el-button size="small" type="primary">点击上传</el-button>
         </el-upload>
+        <br />
+        <el-upload class="upload-demo" ref="upload" action="/upload" :on-preview="handlePreview" :on-remove="handleRemove" :auto-upload="false"
+            multiple>
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        </el-upload>
+
+        <!-- <form id="multipleFiles" name="multipleFiles" action="/upload" method="post" enctype="multipart/form-data" >
+            <input type="file" multiple="multiple" name="file"/>
+            <input text="Submit" type="submit"/>
+        </form> -->
     </div>
 </body>
 <!-- import Vue before Element -->
@@ -41,6 +52,12 @@
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
+            },
+            handlePreview(file) {
+                window.open(file.response ? file.response.url : file.url)
+            },
+            submitUpload() {
+                this.$refs.upload.submit()
             }
         }
     })
