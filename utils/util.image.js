@@ -17,9 +17,9 @@ module.exports = () => {
          * @param {*} url 页面URL
          */
         this.catch = async (dir, url) => {
-            let instance = await phantom.create();
+            let instance = await phantom.create(['--ignore-ssl-errors=yes']);
             let page = await instance.createPage();
-            page.viewportSize = { width: 1920, height: 1080 }
+            page.property('viewportSize', { width: 1920, height: 1080 })
             let status = await page.open(url)
             if ('success' == status) {
                 let png = fileUtil.persistBase64(dir, await page.renderBase64('PNG'), '.png')
