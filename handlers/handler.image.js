@@ -73,19 +73,22 @@ module.exports = () => {
             ctx.body = imgs
         },
         catch: async (ctx, next) => {
-            let page = ctx.query.page
+            let page = ctx.query.page, type = ctx.query.type
             let image = await imageUtil.catch(config.path.root + config.path.image, page)
             let url = config.path.image + image.relativePath
             historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
             
-            ctx.body = {
-                state: config.state.success,
-                url: url,
-                title: image.name,
-                type: 'image/png',
-                size: image.size
+            if(type && 'redirect' == type) {
+                ctx.redirect(url)
+            } else {
+                ctx.body = {
+                    state: config.state.success,
+                    url: url,
+                    title: image.name,
+                    type: 'image/png',
+                    size: image.size
+                }
             }
-
         },
         delete: (ctx, next) => {
             let name = ctx.params.name
