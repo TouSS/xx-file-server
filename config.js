@@ -50,5 +50,8 @@ module.exports = {
         categories: {
             default: { appenders: ['stdout'], level: 'debug' }
         }
+    },
+    font: {
+        dir: __dirname + '/fonts'
     }
 }

@@ -9,6 +9,8 @@
 
 <body>
     <div id="app">
+        <img :src="image">
+
         <el-upload action="/image" multiple list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
             <i class="el-icon-plus"></i>
         </el-upload>
@@ -24,6 +26,10 @@
             multiple>
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        </el-upload>
+        <br>
+        <el-upload class="upload-demo" action="/font" :on-remove="handleRemove" :on-preview="handlePreview" multiple>
+            <el-button size="small" type="primary">上传字体</el-button>
         </el-upload>
 
         <!-- <form id="multipleFiles" name="multipleFiles" action="/upload" method="post" enctype="multipart/form-data" >
@@ -42,7 +48,8 @@
         data() {
             return {
                 dialogImageUrl: '',
-                dialogVisible: false
+                dialogVisible: false,
+                image: '/imageText?text=Welcom ! ! !&font=BAUHS93&size=50px&color=f0f0f0'
             }
         },
         methods: {

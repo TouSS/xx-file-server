@@ -18,7 +18,17 @@ module.exports = () => {
             }
         }
         /**
-         * 保存文件
+         * 写文件到指定目录
+         * @param {*} dir 
+         * @param {*} file 
+         */
+        this.write = (dir, file) => {
+            let filePath = dir + '/' + file.name
+            this.mkdirs(path.dirname(filePath))
+            fs.writeFileSync(filePath, fs.readFileSync(file.path))
+        }
+        /**
+         * 保存文件(已MD5命名)
          * @param {*} dir 
          * @param {*} file 
          */
@@ -26,25 +36,9 @@ module.exports = () => {
             //计算图片MD5
             let fileBuffer = fs.readFileSync(file.path)
             let type = '.' + file.name.split('.').pop()
-            /* let md5 = crypto.createHash('md5')
-            md5.update(fileBuffer)
-            let md5Hex = md5.digest('hex');
-            //文件名（MD5.3/MD5.3/MD5 + 图片后缀）
-            let fileName =  md5Hex + '.' + file.name.split('.').pop()
-            let relativePath = '/' + md5Hex.substr(0, 3) + '/' + md5Hex.substr(3, 3) + '/' + fileName
-            let filePath = dir + relativePath
-            //保存文件
-            this.mkdirs(path.dirname(filePath))
-            fs.writeFileSync(filePath, fileBuffer) */
             let result = this.persistBuffer(dir, fileBuffer, type)
             //移除零时文件
             this.delete(file.path, false)
-
-            /* return {
-                name: fileName,
-                path: filePath,
-                relativePath: relativePath
-            } */
             return result
         }
         /**
@@ -55,24 +49,6 @@ module.exports = () => {
          */
         this.persistBase64 = (dir, base64Str, type) => {
             let fileBuffer = Buffer.from(base64Str, 'base64')
-            /* let size = fileBuffer.length
-            let md5 = crypto.createHash('md5')
-            md5.update(fileBuffer)
-            let md5Hex = md5.digest('hex');
-            //文件名（MD5.3/MD5.3/MD5 + 图片后缀）
-            let fileName =  md5Hex + type
-            let relativePath = '/' + md5Hex.substr(0, 3) + '/' + md5Hex.substr(3, 3) + '/' + fileName
-            let filePath = dir + relativePath
-            //保存文件
-            this.mkdirs(path.dirname(filePath))
-            fs.writeFileSync(filePath, fileBuffer)
-
-            return {
-                size: size,
-                name: fileName,
-                path: filePath,
-                relativePath: relativePath
-            } */
             return this.persistBuffer(dir, fileBuffer, type)
 
         }
@@ -142,11 +118,19 @@ module.exports = () => {
         this.isRightFile = (fileTypeList, file) => {
             for(let i in fileTypeList) {
                 let reg = new RegExp(`^.*\\${fileTypeList[i]}$`)
-                if(reg.test(file.name)) {
+                if(reg.test(file.name.toLowerCase())) {
                     return true
                 }
             }
             return false
+        }
+
+        /**
+         * 文件列表
+         * @param {*} dir 
+         */
+        this.list = (dir) => {
+            return fs.readdirSync(dir)
         }
     } ()
 }
