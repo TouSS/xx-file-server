@@ -22,6 +22,7 @@
   "dependencies": {
     "canvas": "git+https://github.com/chearon/node-canvas.git",
     "cheerio": "^1.0.0-rc.2",
+    "cryptiles": "^4.1.2",
     "easy-monitor": "^2.2.3",
     "fluent-ffmpeg": "^2.1.2",
     "hoek": "^5.0.3",
@@ -34,7 +35,8 @@
     "koa2-cors": "^2.0.5",
     "log4js": "^2.10.0",
     "mime": "^2.3.1",
-    "phantom": "^6.0.3"
+    "phantom": "^6.0.3",
+    "timespan": "^2.3.0"
   },
   "devDependencies": {}
 }
