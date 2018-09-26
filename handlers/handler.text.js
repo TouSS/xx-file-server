@@ -34,7 +34,7 @@ module.exports = () => {
             ctx.fillStyle = '#' + color || '#000'
             let text = ctx.measureText(textContent)
             canvas.width = text.width + 10
-            canvas.height = text.actualBoundingBoxAscent + 20
+            canvas.height = text.actualBoundingBoxAscent + text.actualBoundingBoxDescent + 10
             ctx.fillText(textContent, 5, text.actualBoundingBoxAscent + 5);
             reqCtx.set("Content-Type", "image/png")
             reqCtx.body = canvas.toBuffer('image/png')
