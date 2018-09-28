@@ -39,12 +39,12 @@ onerror(app, {
     //ctx.redirect('/500.html');
     //log.error(`${err.message}`)
   }
-}) */ 
+}) */
 
 app.use(accessHandler())
 
 //允许跨域
-app.use(cors())
+app.use(cors({ origin: '*' }))
 
 //静态资源目录
 app.use(require('koa-static')(config.path.root, {

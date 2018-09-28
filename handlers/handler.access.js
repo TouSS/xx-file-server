@@ -13,6 +13,6 @@ module.exports = () => {
         let start = new Date().getTime()
         await next()
         let end = new Date().getTime()
-        log.debug(`HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms`)
+        log.debug(`HTTP/ ${ctx.method}:${ctx.url}[${ctx.req.headers['x-real-ip'] || ctx.ip || 'unknown'}] ${end - start}ms, Origin: ${ctx.get('Origin')}`)
     }
 }
