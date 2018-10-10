@@ -26,12 +26,12 @@ module.exports = () => {
                         info.msg = `获取视频截图失败: ${err.message}`
                         log.warn(info.msg)
                         info.url = '/resources/video.jpg'
-                        resolve(info)
+                        return resolve(info)
                     })
                     .on('end', () => {
                         info = this.parseInfo(stdout)
                         info.url = config.path.image + relativeDir + '/' + screenshotName
-                        resolve(info)
+                        return resolve(info)
                     })
                     .screenshots({
                         timestamps: [5], //5秒处截图
@@ -60,7 +60,7 @@ module.exports = () => {
                         info.msg = `获取音乐专辑封面失败: ${err.message}`
                         log.warn(info.msg)
                         info.url = '/resources/audio.jpg'
-                        resolve(info)
+                        return resolve(info)
                     })
                     .on('stderr', line => {
                         stdout.push(line)
@@ -68,7 +68,7 @@ module.exports = () => {
                     .on('end', () => {
                         info = this.parseInfo(stdout)
                         info.url = coverUrl
-                        resolve(info)
+                        return resolve(info)
                     })
                     .save(config.path.root + coverUrl)
             })

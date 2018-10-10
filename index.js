@@ -48,7 +48,7 @@ app.use(cors({ origin: '*' }))
 
 //静态资源目录
 app.use(require('koa-static')(config.path.root, {
-  maxage: 1000 * 60 * 10 //浏览器缓存30分钟（毫秒）
+  maxage: 1000 * 60 * 10 //浏览器缓存时间（毫秒）
 }))
 
 //参数对象处理

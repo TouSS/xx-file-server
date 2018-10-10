@@ -82,9 +82,9 @@ module.exports = () => {
                     let code = res.statusCode
                     let contentType = res.headers['content-type']
                     if (!code == 200) {
-                        reject(new Error(`Request Failed, Status Code: ${statusCode}`))
+                        return reject(new Error(`Request Failed, Status Code: ${statusCode}`))
                     } else if (!/^image\/.*/.test(contentType)) {
-                        reject(new Error(`Invalid content-type, Expected image/* but received ${contentType}`))
+                        return reject(new Error(`Invalid content-type, Expected image/* but received ${contentType}`))
                     }
                     let imageBuffer = [];
                     let size = 0
@@ -93,26 +93,26 @@ module.exports = () => {
                         size += chunk.length
                     })
                     res.on('end', () => {
-                        resolve({
+                        return resolve({
                             data: Buffer.concat(imageBuffer),
                             type: contentType,
                             size: size
                         })
                     })
                     res.on('error', err => {
-                        reject(err)
+                        return reject(err)
                     })
                 })
                 //处理连接错误
                 req.on('error', (err) => {
-                    reject(err)
+                    return reject(err)
                 })
 
                 //获取超时处理
                 setTimeout(() => {
                     //关闭连接
                     req.abort()
-                    reject(new Error(`TIMEOUT`))
+                    return reject(new Error(`TIMEOUT`))
                 }, timeout)
             })
         }
@@ -127,28 +127,33 @@ module.exports = () => {
         this.resize = (dir, image, width, height) => {
             return new Promise((resolve, reject) => {
                 Jimp.read(image, (err, img) => {
-                    if (err) reject(err)
+                    if (err) return reject(err)
                     let sourceWidth = img.bitmap.width
                     let sourceHeight = img.bitmap.height
                     if (sourceWidth <= config.upload.imageResizeMinWidth) {
-                        resolve({
+                        return resolve({
                             sourceWidth: sourceWidth,
                             sourceHeight: sourceHeight
                         })
-                        //reject('未达到压缩标准, 放弃本次操作.')
                     }
                     if (!width) width = sourceWidth / config.upload.imageResizeScale
                     width = width > config.upload.imageResizeMinWidth ? width : config.upload.imageResizeMinWidth
                     if (!height) height = Jimp.AUTO
                     img.resize(width, height)
                         .getBuffer(Jimp.AUTO, (err, buffer) => {
-                            if (err) reject(err)
+                            if (err) {
+                                //错误类型, 无法处理
+                                return resolve({
+                                    sourceWidth: sourceWidth,
+                                    sourceHeight: sourceHeight
+                                })
+                            }
                             let suffix = img.getMIME().split('/').pop()
                             let thenImg = fileUtil.persistBuffer(dir, buffer, suffix ? '.' + suffix : '.png')
                             thenImg.sourceWidth = sourceWidth
                             thenImg.sourceHeight = sourceHeight
 
-                            resolve(thenImg)
+                            return resolve(thenImg)
                         })
                 })
             })
