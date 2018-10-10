@@ -22,7 +22,7 @@ module.exports = () => {
             let img = await imageUtil.resize(config.path.root + config.path.image, image.path)
             let url = config.path.image + image.relativePath, thumbnail = img.relativePath ? config.path.image + img.relativePath : ''
             //添加历史
-            historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
+            historyUtil.add({ url: url }, historyUtil.FILE_TYPE_IMAGE)
             ctx.body = {
                 state: config.state.success,
                 url: url,
@@ -30,14 +30,16 @@ module.exports = () => {
                 title: image.name,
                 original: file.name,
                 type: file.type,
-                size: file.size
+                size: file.size,
+                height: img.sourceHeight,
+                width: img.sourceWidth
             }
         },
         putBase64: (ctx, next) => {
             let image = fileUtil.persistBase64(config.path.root + config.path.image, ctx.request.body.file, '.jpg')
             let url = config.path.image + image.relativePath
             //添加历史
-            historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
+            historyUtil.add({ url: url }, historyUtil.FILE_TYPE_IMAGE)
             ctx.body = {
                 state: config.state.success,
                 url: url,
@@ -51,7 +53,7 @@ module.exports = () => {
             let images = await imageUtil.download(config.path.root + config.path.image, imageUrlList)
             let imgs = [], url
             images.forEach(image => {
-                if(config.state.success == image.state) {
+                if (config.state.success == image.state) {
                     url = config.path.image + image.relativePath
                     imgs.push({
                         state: image.state,
@@ -60,7 +62,7 @@ module.exports = () => {
                         type: image.type,
                         url: url
                     })
-                    historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
+                    historyUtil.add({ url: url }, historyUtil.FILE_TYPE_IMAGE)
                 } else {
                     imgs.push({
                         state: image.state,
@@ -68,7 +70,7 @@ module.exports = () => {
                         source: image.source
                     })
                 }
-                
+
             })
             ctx.body = imgs
         },
@@ -76,9 +78,9 @@ module.exports = () => {
             let page = ctx.query.page, type = ctx.query.type
             let image = await imageUtil.catch(config.path.root + config.path.image, page)
             let url = config.path.image + image.relativePath
-            historyUtil.add({url: url}, historyUtil.FILE_TYPE_IMAGE)
-            
-            if(type && 'redirect' == type) {
+            historyUtil.add({ url: url }, historyUtil.FILE_TYPE_IMAGE)
+
+            if (type && 'redirect' == type) {
                 ctx.redirect(url)
             } else {
                 ctx.body = {
