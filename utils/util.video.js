@@ -131,6 +131,9 @@ module.exports = () => {
                     case 'Duration':
                         this.formatDuration(line, info)
                         break
+                    case 'Stream #0':
+                        this.formatResolution(line, info)
+                        break
                     default:
                         break
                 }
@@ -156,6 +159,17 @@ module.exports = () => {
                     }
                 }
             })
+        }
+
+        /**
+         * 截取分辨率信息
+         */
+        this.formatResolution = (stream, info) => {
+            if (stream.indexOf('Video:') >= 0) {
+                let reg = /\d{2,}x\d{2,}/
+                resolution = stream.match(reg).toString()
+                if (resolution) info.resolution = resolution
+            }
         }
     }()
 }

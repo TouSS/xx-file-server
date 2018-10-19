@@ -41,6 +41,7 @@ module.exports = () => {
                 msg: screenshot.msg,
                 screenshot: screenshot.url,
                 length: screenshot.duration,
+                resolution: screenshot.resolution,
                 url: url,
                 title: video.name,
                 original: file.name,
