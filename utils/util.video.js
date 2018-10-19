@@ -168,7 +168,11 @@ module.exports = () => {
             if (stream.indexOf('Video:') >= 0) {
                 let reg = /\d{2,}x\d{2,}/
                 resolution = stream.match(reg).toString()
-                if (resolution) info.resolution = resolution
+                if (resolution) {
+                    let wh = resolution.split('x')
+                    info.width = wh[0]
+                    info.height = wh[1]
+                }
             }
         }
     }()
