@@ -31,8 +31,8 @@ module.exports = () => {
             } else {
                 throw new Error('无法获取页面内容...')
             } */
-
-            let browser = await puppeteer.launch({ headless: false, defaultViewport: { width: width ? Number.parseInt(width) : 800, height: height ? Number.parseInt(height) : 600 } })
+            //使用非沙箱模式, 安全性降低, 但是可以减少依赖像 （LINUX环境下）
+            let browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: true, defaultViewport: { width: width ? Number.parseInt(width) : 1366, height: height ? Number.parseInt(height) : 900 } })
             let page = await browser.newPage()
             try {
                 await page.goto(url, { timeout: 10 * 1000 })
