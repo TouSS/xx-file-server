@@ -6,6 +6,7 @@ const https = require('https')
 
 const Jimp = require('jimp')
 const phantom = require('phantom')
+const puppeteer = require('puppeteer')
 
 const config = require('../config')
 const fileUtil = require('./util.file')()
@@ -15,11 +16,13 @@ module.exports = () => {
          * 获取网页截图
          * @param {*} dir 
          * @param {*} url 页面URL
+         * @param {*} width 页面宽度
+         * @param {*} height 页面高度
          */
-        this.catch = async (dir, url) => {
-            let instance = await phantom.create(['--ignore-ssl-errors=yes']);
+        this.catch = async (dir, url, width, height) => {
+            /* let instance = await phantom.create(['--ignore-ssl-errors=yes']);
             let page = await instance.createPage();
-            page.property('viewportSize', { width: 1920, height: 1080 })
+            page.property('viewportSize', { width: width ? width : 1920, height: height ? height :1080 })
             let status = await page.open(url)
             if ('success' == status) {
                 let png = fileUtil.persistBase64(dir, await page.renderBase64('PNG'), '.png')
@@ -27,6 +30,18 @@ module.exports = () => {
                 return png
             } else {
                 throw new Error('无法获取页面内容...')
+            } */
+
+            let browser = await puppeteer.launch({ headless: false, defaultViewport: { width: width ? Number.parseInt(width) : 800, height: height ? Number.parseInt(height) : 600 } })
+            let page = await browser.newPage()
+            try {
+                await page.goto(url, { timeout: 10 * 1000 })
+                await this.sleep(2 * 1000)
+                let png = fileUtil.persistBuffer(dir, await page.screenshot(), '.png')
+                await browser.close()
+                return png
+            } catch (error) {
+                throw new Error('无法获取页面内容:' + error)
             }
         }
         /**
@@ -156,6 +171,17 @@ module.exports = () => {
                             return resolve(thenImg)
                         })
                 })
+            })
+        }
+
+        /**
+         * 阻塞操作
+         */
+        this.sleep = timeout => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve()
+                }, timeout)
             })
         }
     }()

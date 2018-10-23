@@ -75,8 +75,8 @@ module.exports = () => {
             ctx.body = imgs
         },
         catch: async (ctx, next) => {
-            let page = ctx.query.page, type = ctx.query.type
-            let image = await imageUtil.catch(config.path.root + config.path.image, page)
+            let page = ctx.query.page, type = ctx.query.type, width =  ctx.query.width, height =  ctx.query.height
+            let image = await imageUtil.catch(config.path.root + config.path.image, page, width, height)
             let url = config.path.image + image.relativePath
             historyUtil.add({ url: url }, historyUtil.FILE_TYPE_IMAGE)
 
