@@ -5,11 +5,12 @@ const http = require('http')
 const https = require('https')
 
 const Jimp = require('jimp')
-const phantom = require('phantom')
 const puppeteer = require('puppeteer')
 
 const config = require('../config')
 const fileUtil = require('./util.file')()
+const { sleep } = require('../lib/common')
+
 module.exports = () => {
     return new function () {
         /**
@@ -36,7 +37,7 @@ module.exports = () => {
             let page = await browser.newPage()
             try {
                 await page.goto(url, { timeout: 10 * 1000 })
-                await this.sleep(2 * 1000)
+                await sleep(2 * 1000)
                 let png = fileUtil.persistBuffer(dir, await page.screenshot(), '.png')
                 await browser.close()
                 return png
@@ -171,17 +172,6 @@ module.exports = () => {
                             return resolve(thenImg)
                         })
                 })
-            })
-        }
-
-        /**
-         * 阻塞操作
-         */
-        this.sleep = timeout => {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve()
-                }, timeout)
             })
         }
     }()

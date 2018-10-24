@@ -92,6 +92,9 @@ module.exports = () => {
                 }
             }
         },
+        wordcloud: async (ctx, next) => {
+            let file = ctx.request.files.file
+        },
         delete: (ctx, next) => {
             let name = ctx.params.name
             let filePath = config.path.root + config.path.image + '/' + name.substr(0, 3) + '/' + name.substr(3, 3) + '/' + name
