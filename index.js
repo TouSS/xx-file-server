@@ -53,9 +53,11 @@ app.use(require('koa-static')(config.path.root, {
 
 //参数对象处理
 app.use(body({
+  jsonLimit: '5mb', // 控制body的parse转换大小 default 1mb
+  formLimit: '4096kb',  //  控制你post的大小  default 56kb
   multipart: true,
   formidable: {
-    maxFileSize: config.upload.maxSize    // 设置上传文件大小最大限制,默认2M
+    maxFileSize: config.upload.maxSize,    // 设置上传文件大小最大限制, 默认2M
   }
 }))
 

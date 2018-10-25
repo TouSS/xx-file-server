@@ -5,6 +5,20 @@
     <meta charset="UTF-8">
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        #wordcloud {
+            margin: 10px 0px;
+            width: 80%;
+        }
+        #wordcloud input {
+            margin: 10px 0px;
+        }
+        .line {
+            margin: 10px 0;
+            text-align: center;
+            line-height: 40px;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,8 +36,8 @@
             <el-button size="small" type="primary">点击上传</el-button>
         </el-upload>
         <br />
-        <el-upload class="upload-demo" ref="upload" action="/upload" :on-preview="handlePreview" :on-remove="handleRemove" :auto-upload="false"
-            multiple>
+        <el-upload class="upload-demo" ref="upload" action="/upload" :on-preview="handlePreview" :on-remove="handleRemove"
+            :auto-upload="false" multiple>
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
         </el-upload>
@@ -36,6 +50,23 @@
             <input type="file" multiple="multiple" name="file"/>
             <input text="Submit" type="submit"/>
         </form> -->
+
+        <form id="wordcloud" action="/image/wordcloud" method="post" target="_blank">
+            <el-input type="textarea" :rows="8" placeholder="贴入文本段落" name="text"></el-input>
+            <el-input name="imageShape" placeholder="图形底图链接"></el-input>
+            <el-col :span="2">
+                <el-input name="width" placeholder="宽"></el-input>
+            </el-col>
+            <el-col class="line" :span="1">x</el-col>
+            <el-col :span="2">
+                <el-input name="height" placeholder="高"></el-input>
+            </el-col>
+            <el-col>
+                <input type="submit" class="el-button el-button--primary el-button--small" />
+            </el-col>
+        </form>
+
+
     </div>
 </body>
 <!-- import Vue before Element -->

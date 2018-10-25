@@ -15,6 +15,13 @@ module.exports = [
             await imageHandler.catch(ctx, next)
         }
     }, {
+        path: '/image/wordcloud',
+        desc: '生成词云图, 参数：text - 需要处理得文字段落, imageShape - 词云图形状高对比图片, width - 词云图宽度, height - 词云图高度',
+        method: 'POST',
+        handler: async (ctx, next) => {
+            await imageHandler.wordcloud(ctx, next)
+        }
+    }, {
         path: '/image/:name',
         desc: '删除图片文件, URL参数：name - 图片名称',
         method: 'DELETE',

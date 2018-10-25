@@ -27,4 +27,4 @@ for(let i = 0; i < str.length; i++) {
 
 //ctx.fillText(str, 0, text.actualBoundingBoxAscent)
 
-fs.writeFileSync('./test/font.png', canvas.toBuffer())
+fs.writeFileSync('./demo/font.png', canvas.toBuffer())
