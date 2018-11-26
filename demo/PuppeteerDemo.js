@@ -3,9 +3,10 @@ const fs = require('fs');
 
 (async () => {
   const browser = await puppeteer.launch({ 
-    headless: true, 
+    headless: false, 
     defaultViewport: { width: 1920, height: 1080 },
-    //executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe' 
+    /* 选择本地安装的谷歌浏览器 */
+    executablePath: '/opt/google/chrome/chrome' 
   });
   const page = await browser.newPage();
   /* page.on('request', request => {
