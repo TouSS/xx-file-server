@@ -2,15 +2,12 @@ const Koa = require('koa');
 const app = new Koa();
 const cors = require('koa2-cors')
 const onerror = require('koa-onerror')
-const easyMonitor = require('easy-monitor');
 const body = require('koa-body')
 
 const config = require('./config')
 const log = require('./utils/util.log').getLogger()
 const router = require('./router')
 const accessHandler = require('./handlers/handler.access')
-
-easyMonitor('Image-Server');
 
 //错误处理
 onerror(app, {
