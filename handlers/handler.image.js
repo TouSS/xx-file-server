@@ -94,24 +94,21 @@ module.exports = () => {
             }
         },
         wordcloud: async (ctx, next) => {
-            let type = ctx.params.type | 'text',
-                formated = ctx.params.formated,
-                imageShape = ctx.request.body.imageShape,
+            let type = ctx.request.body.type || 'text',
+                formated = ctx.request.body.formated,
+                imageShapeUrl = ctx.request.body.imageShape,
                 height = ctx.request.body.height,
-                width = ctx.request.body.width
+                width = ctx.request.body.width,
+                text = ctx.request.body.text,
+                textFileUrl = ctx.request.body.textFile
 
             let words = {}
             if('text' == type) {
-                words = wordcloudUtil.segment(ctx.request.body.text)
+                words = wordcloudUtil.parseText(text, formated)
             } else if('file' == type) {
-                if(formated) {
-                    words = wordcloudUtil.parseFomatedFile(ctx.request.files.file)
-                } else {
-                    words = wordcloudUtil.segmentFile(ctx.request.files.file)
-                }
-                
+                words = await wordcloudUtil.parseFile(textFileUrl, formated)
             }
-            let wordcloud = await wordcloudUtil.drawWordcload(words, imageShape, { width: width, height: height })
+            let wordcloud = await wordcloudUtil.drawWordcload(words, imageShapeUrl, { width: width, height: height })
             let image = fileUtil.persistBuffer(config.path.root + config.path.image, wordcloud, '.png')
             let url = config.path.image + image.relativePath
             ctx.body = {

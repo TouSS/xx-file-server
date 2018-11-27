@@ -16,7 +16,7 @@ module.exports = [
         }
     }, {
         path: '/image/wordcloud',
-        desc: '生成词云图, URL参数：type - 类型（text/file），formated - 是否为格式化后数据， imageShape - 词云图形状高对比图片, width - 词云图宽度, height - 词云图高度, POST参数：text - 需要处理得文字段落， file - 需要处理的文本文件',
+        desc: '生成词云图, POST参数：type - 类型（text/file），formated - 是否为格式化后数据， imageShape - 词云图形状高对比图片, width - 词云图宽度, height - 词云图高度, text - 需要处理得文字段落， textFile - 需要处理的文本文件',
         method: 'POST',
         handler: async (ctx, next) => {
             await imageHandler.wordcloud(ctx, next)

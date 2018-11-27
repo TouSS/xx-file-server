@@ -5,7 +5,7 @@
             "script": "./index.js",
             "watch": true, //监控所有文件变化<变化重启>, 或者监控部分 "watch": ["hadlers", "routers"] | "handlers", 数组或者字符串都可以
             "ignore_watch" : ["node_modules", "static", ".git", "logs"],
-            "instances"  : 4, // 0/max 使用所有可用CPU
+            "instances"  : 1, // 0/max 使用所有可用CPU
             "exec_mode"  : "cluster",
             "env": {
                 "NODE_ENV": "development"

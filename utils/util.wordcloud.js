@@ -1,4 +1,5 @@
-const fs = require('fs')
+const http = require('http')
+const https = require('https')
 
 const Segment = require('segment')
 const { createCanvas, loadImage } = require('canvas')
@@ -166,31 +167,76 @@ module.exports = () => {
     }
 
     /**
-     * 分词统计（文件）
+     * 段落文本统计
      */
-    this.segmentFile = file => {
-      let text = fs.readFileSync(file)
-      return this.segment(text.toString())
-    }
-
-    /**
-     * 格式化文件输入
-     */
-    this.parseFomatedFile = file => {
-      let wordsCount = {}
-      let text = fs
-        .readFileSync(file)
-        .toString()
-        .trim()
-      if (text) {
+    this.parseText = (text, fomated) => {
+      if (fomated) {
+        let wordsCount = {}
         text.split('\n').forEach(item => {
           let tmp = item.split(',')
           if (tmp.length == 2) {
             wordsCount[tmp[0].trim()] = Number.parseInt(tmp[1].trim())
           }
         })
+        return wordsCount
+      } else {
+        return this.segment(text)
       }
-      return wordsCount
+    }
+
+    /**
+     * 文件内容统计
+     */
+    this.parseFile = (url, fomated) => {
+      let getter = url.indexOf('https') >= 0 ? https : http
+      return new Promise((resolve, reject) => {
+        let req = getter.get(url, res => {
+          let code = res.statusCode
+          if (!code == 200) {
+            return reject(
+              new Error(`Request Failed, Status Code: ${statusCode}`)
+            )
+          }
+          let buffer = []
+          let size = 0
+          res.on('data', chunk => {
+            buffer.push(chunk)
+            size += chunk.length
+          })
+          res.on('end', () => {
+            let text = Buffer.concat(buffer)
+              .toString()
+              .trim()
+            if (text) {
+              if (fomated) {
+                let wordsCount = {}
+                text.split('\n').forEach(item => {
+                  let tmp = item.split(',')
+                  if (tmp.length == 2) {
+                    wordsCount[tmp[0].trim()] = Number.parseInt(tmp[1].trim())
+                  }
+                })
+                return resolve(wordsCount)
+              } else {
+                return resolve(this.segment(text))
+              }
+            }
+          })
+          res.on('error', err => {
+            return reject(err)
+          })
+        })
+        //处理连接错误
+        req.on('error', err => {
+          return reject(err)
+        })
+        //获取超时处理
+        setTimeout(() => {
+          //关闭连接
+          req.abort()
+          return reject(new Error(`TIMEOUT`))
+        }, 10 * 1000)
+      })
     }
   }()
 }
