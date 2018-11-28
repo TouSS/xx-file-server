@@ -14,4 +14,4 @@ CENTOS：
 
     使用时使用 puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] }) 不使用沙箱 安全性降低 安装配置 简化
 
-    
+注：Chromium下载失败时可以使用淘宝镜像进行下载， npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
