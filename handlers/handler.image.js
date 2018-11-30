@@ -96,6 +96,7 @@ module.exports = () => {
         wordcloud: async (ctx, next) => {
             let type = ctx.request.body.type || 'text',
                 formated = ctx.request.body.formated,
+                backgroundColor = ctx.request.body.backgroundColor || '#fff'
                 imageShapeUrl = ctx.request.body.imageShape,
                 height = ctx.request.body.height,
                 width = ctx.request.body.width,
@@ -108,7 +109,7 @@ module.exports = () => {
             } else if('file' == type) {
                 words = await wordcloudUtil.parseFile(textFileUrl, formated)
             }
-            let wordcloud = await wordcloudUtil.drawWordcload(words, imageShapeUrl, { width: width, height: height })
+            let wordcloud = await wordcloudUtil.drawWordcload(words, imageShapeUrl, { width: width, height: height, backgroundColor: backgroundColor })
             let image = fileUtil.persistBuffer(config.path.root + config.path.image, wordcloud, '.png')
             let url = config.path.image + image.relativePath
             ctx.body = {
