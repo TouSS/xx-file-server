@@ -17,7 +17,7 @@ module.exports = [
         }
     }, {
         path: '/imageText',
-        desc: '获取包裹文字内容的图片, 参数: text-文字内容, font-字体, size-大小, color-颜色',
+        desc: '获取包裹文字内容的图片, 参数: text-文字内容, font-字体, size-大小, color-颜色， space-字间距',
         method: 'GET',
         handler: (ctx, next) => {
             handler.imageText(ctx, next)

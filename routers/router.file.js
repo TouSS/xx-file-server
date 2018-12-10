@@ -21,5 +21,12 @@ module.exports = [
         handler: (ctx, next) => {
             handler.customize(ctx, next)
         }
+    }, {
+        path: '/file/preview/:name',
+        desc: '通用-预览文件, URL参数：name - 文件名称， 当前支持Office文件预览',
+        method: 'GET',
+        handler: async (ctx, next) => {
+            await handler.preview(ctx, next)
+        }
     }
 ]
