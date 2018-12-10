@@ -19,6 +19,7 @@ CENTOS：
 注：Chromium下载失败时可以使用淘宝镜像进行下载， npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
 
 ## Office文件预览
+基于LibreOffice, 调用LibreOffice文档转换
 [Unoconv](http://dag.wieers.com/home-made/unoconv/) is required
 [LibreOffice (or OpenOffice.)](https://www.libreoffice.org/) is required
 ### LibreOffice Centos7安装
@@ -29,3 +30,7 @@ yum remove openoffice* libreoffice* 卸载旧版本
 ### Unoconv Centos7安装
 git clone https://github.com/dagwieers/unoconv.git (需要安装[python](https://www.python.org/))
 ln -s unoconv/unoconv /usr/bin/unoconv 全局访问
+
+###Ubuntu18安装
+LibreOffice： 安装自带LibreOffice
+Unoconv： sudo apt install unoconv
