@@ -1,5 +1,5 @@
 # xx-file-server
-A simple picture server
+A simple file server
 
 # require
 ## 视频处理
@@ -21,3 +21,11 @@ CENTOS：
 ## Office文件预览
 [Unoconv](http://dag.wieers.com/home-made/unoconv/) is required
 [LibreOffice (or OpenOffice.)](https://www.libreoffice.org/) is required
+### LibreOffice Centos7安装
+yum remove openoffice* libreoffice* 卸载旧版本
+[下载](https://www.libreoffice.org/download/download/)最新版本LibreOffice
+解压下载文件
+安装，进入到的RPMS目录执行 yum localinstall *.rpm
+### Unoconv Centos7安装
+git clone https://github.com/dagwieers/unoconv.git (需要安装[python](https://www.python.org/))
+ln -s unoconv/unoconv /usr/bin/unoconv 全局访问
