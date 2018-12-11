@@ -56,6 +56,8 @@ ffmpeg: Make sure you have [ffmpeg](http://www.ffmpeg.org) installed on your sys
     xdg-utils
     wget
 
+    字体： apt-get install xfonts-wqy ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-uming
+
 注：Chromium下载失败时可以使用淘宝镜像进行下载， npm config set puppeteer_download_host=https://npm.taobao.org/mirrors
 
 ## Office文件预览
