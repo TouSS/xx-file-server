@@ -2,6 +2,7 @@ node_modules
 static/other
 static/images
 static/videos
+static/tmp
 logs
 fonts
 .vscode

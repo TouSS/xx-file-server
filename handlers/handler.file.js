@@ -1,5 +1,7 @@
 const fs = require('fs')
+const os = require('os')
 const send = require('koa-send')
+const ejs = require('ejs')
 
 const config = require('../config')
 const fileUtil = require('../utils/util.file')()
@@ -7,6 +9,8 @@ const historyUtil = require('../utils/util.history')
 
 const imageHandler = require('./handler.image')()
 const videoHandler = require('./handler.video')()
+
+const log = require('../utils/util.log').getLogger()
 
 module.exports = () => {
   return {
@@ -76,10 +80,22 @@ module.exports = () => {
       let name = ctx.params.name
       let path = `${config.path.root}${config.path.other}/${name.substr(0, 3)}/${name.substr(3, 3)}/${name}`
       let previewPath = await fileUtil.convertOfficeFile(name, path)
-      //ctx.set('Content-Type', 'text/html; charset=utf-8')
       try {
-        await send(ctx, previewPath, { root: '/tmp' })
+        let suffix = fileUtil.getFileSuffix(name)
+        if('ppt' == suffix || 'pptx' == suffix) {
+          //ppt文件再次转换为图片文件
+          let previewDir = `${config.path.root}${config.path.tmp}/${name}`
+          if(!fs.existsSync(previewDir)) {
+            fileUtil.mkdirs(previewDir)
+            let imgs = await fileUtil.pdf2png(`${os.tmpdir()}/${previewPath}`, previewDir)
+            let html = await ejs.renderFile(`${config.__home}/templates/ppt.ejs`, {imgs: imgs}, {async: true})
+            fs.writeFileSync(`${previewDir}/index.html`, html)
+          }
+          ctx.redirect(`${config.path.tmp}/${name}/index.html`)
+        }
+        await send(ctx, previewPath, { root: os.tmpdir() })
       } catch (error) {
+        log.error(error)
         ctx.body = '预览失败，请检查文件是否为Office文件。'
       }
 

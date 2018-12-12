@@ -4,11 +4,12 @@ const path = require('path')
 const crypto = require('crypto')
 
 const unoconv = require('unoconv-promise')
+const imagemagick = require('imagemagick')
 
 const log = require('./util.log').getLogger()
 
 module.exports = () => {
-  return new function() {
+  return new function () {
     /**
      * 递归创建目录
      * @param {*} dir
@@ -159,10 +160,10 @@ module.exports = () => {
     }
 
     /**
-     * 预览目标文件名
+     * Office文件预览文件名
      */
     this.getTargetFileName = sourceFileName => {
-      let suffix = sourceFileName.split('.')[1]
+      let suffix = this.getFileSuffix(sourceFileName)
       if (!suffix) return
       switch (suffix) {
         case 'xls':
@@ -176,6 +177,25 @@ module.exports = () => {
         default:
           return
       }
+    }
+
+    /**
+     * PDF转图片
+     */
+    this.pdf2png = (sourceFile, imgDir) => {
+      return new Promise((resolve, reject) => {
+        imagemagick.convert(['-density', '150', '-antialias', sourceFile, '-quality', '100', `${imgDir}/%03d.png`], (err) => {
+          if(err) return reject(err)
+          return resolve(this.list(imgDir))
+        })
+      })
+    }
+
+    /**
+     * 获取文件后缀
+     */
+    this.getFileSuffix = fileName => {
+      return fileName.split('.')[1]
     }
   }()
 }

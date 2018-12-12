@@ -1,4 +1,5 @@
 module.exports = {
+    __home: __dirname,
     server: {
         port: 3000,
         name: 'File Server'
@@ -7,7 +8,8 @@ module.exports = {
         root: __dirname + '/static',
         other: '/other',
         image: '/images',
-        video: '/videos'
+        video: '/videos',
+        tmp: '/tmp'
     },
     state: {
         success: 'SUCCESS',
