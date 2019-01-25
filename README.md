@@ -2,6 +2,20 @@
 A simple file server
 
 # require
+
+## node-canvas
+>npm install canvas
+
+OS|Command
+---|---
+OS X|Using Homebrew:brew install pkg-config cairo pango libpng jpeg giflib librsvg
+Ubuntu|sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+Fedora|sudo yum install gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel
+Solaris|pkgin install cairo pango pkg-config xproto renderproto kbproto xextproto
+OpenBSD|doas pkg_add cairo pango png jpeg giflib
+Windows|See the [wiki](https://github.com/Automattic/node-canvas/wiki/Installation:-Windows)
+Others|See the [wiki](https://github.com/Automattic/node-canvas/wiki)
+
 ## 视频处理
 ffmpeg: Make sure you have [ffmpeg](http://www.ffmpeg.org) installed on your system (including all necessary encoding libraries like libmp3lame or libx264)
 
