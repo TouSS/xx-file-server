@@ -93,6 +93,12 @@ ln -s unoconv/unoconv /usr/bin/unoconv 全局访问
 LibreOffice： 安装自带LibreOffice
 Unoconv： sudo apt install unoconv
 
+###ImageMagick
+
+>sudo yum install ImageMagick
+
+>sudo apt install imagemagick
+
 ## 问题
 ### 安装问题
 Q: node-pre-gyp: Permission denied
