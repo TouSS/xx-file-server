@@ -15,23 +15,12 @@ module.exports = () => {
     return new function () {
         /**
          * 获取网页截图
-         * @param {*} dir 
+         * @param {*} dir
          * @param {*} url 页面URL
          * @param {*} width 页面宽度
          * @param {*} height 页面高度
          */
         this.catch = async (dir, url, width, height) => {
-            /* let instance = await phantom.create(['--ignore-ssl-errors=yes']);
-            let page = await instance.createPage();
-            page.property('viewportSize', { width: width ? width : 1920, height: height ? height :1080 })
-            let status = await page.open(url)
-            if ('success' == status) {
-                let png = fileUtil.persistBase64(dir, await page.renderBase64('PNG'), '.png')
-                instance.exit()
-                return png
-            } else {
-                throw new Error('无法获取页面内容...')
-            } */
             //使用非沙箱模式, 安全性降低, 但是可以减少依赖像 （LINUX环境下）
             let browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: true, defaultViewport: { width: width ? Number.parseInt(width) : 1366, height: height ? Number.parseInt(height) : 900 } })
             let page = await browser.newPage()
@@ -47,7 +36,7 @@ module.exports = () => {
         }
         /**
          * 下载图片到本地
-         * @param {*} dir 
+         * @param {*} dir
          * @param {*} imageUrlList 图片链接
          */
         this.download = async (dir, imageUrlList) => {
@@ -88,7 +77,7 @@ module.exports = () => {
 
         /**
          * 获取图片文件
-         * @param {*} imageUrl 
+         * @param {*} imageUrl
          * @param {*} timeout 超时时间
          */
         this.get = (imageUrl, timeout) => {
@@ -135,10 +124,10 @@ module.exports = () => {
 
         /**
          * 重定义图片大小
-         * @param {*} dir 
-         * @param {*} image 
-         * @param {*} width 
-         * @param {*} height 
+         * @param {*} dir
+         * @param {*} image
+         * @param {*} width
+         * @param {*} height
          */
         this.resize = (dir, image, width, height) => {
             return new Promise((resolve, reject) => {
